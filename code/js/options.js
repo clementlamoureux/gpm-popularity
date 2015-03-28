@@ -1,5 +1,4 @@
 ;(function() {
-  console.log('OPTIONS SCRIPT WORKS!');
 
   // here we use SHARED message handlers, so all the contexts support the same
   // commands. but this is NOT typical messaging system usage, since you usually

@@ -1,7 +1,7 @@
 {
-  "name": "extension-skeleton",
+  "name": "AngularJS Debug",
   "version": "0.1.2",
-  "description": "Bare Google Chrome extension skeleton.",
+  "description": "Debug AngularJS",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",

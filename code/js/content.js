@@ -1,19 +1,59 @@
-;(function() {
-  console.log('CONTENT SCRIPT WORKS!');
+var values = [];
+var elPassed=0;
+var fetched=0;
+var apply = function(numberOfEl){
+	if(values.length===numberOfEl - 1){
+		var max = parseInt(_.max(values, 'value').value);
+		_.each(values, function(value){
+			var result = 10 * parseInt(value.value);
+			result = result/max;
+			result = Math.floor(result);
+			var render = '';
+			for(var i=0; i <= result; i++){
+				render+='|';
+			}
+			if(!jQuery(value.element).find('[data-col="note"]').length){
+				jQuery(value.element).find('[data-col="title"]').find('.content').parent().before('<td data-col="note">' + render + '</td>');
+			}
+		})
+	}
+}
+var fetchAll =  _.debounce(function(){
+	if(fetched){
+		return false;
+	}
+	fetched = true;
+	$('.song-table').find('th[data-col="title"]').before('<th data-col="note">LF</th>');
 
-  var $ = require('./libs/jquery');
-  // here we use SHARED message handlers, so all the contexts support the same
-  // commands. but this is NOT typical messaging system usage, since you usually
-  // want each context to handle different commands. for this you don't need
-  // handlers factory as used below. simply create individual `handlers` object
-  // for each context and pass it to msg.init() call. in case you don't need the
-  // context to support any commands, but want the context to cooperate with the
-  // rest of the extension via messaging system (you want to know when new
-  // instance of given context is created / destroyed, or you want to be able to
-  // issue command requests from this context), you may simply omit the
-  // `handlers` parameter for good when invoking msg.init()
-  var handlers = require('./modules/handlers').create('ct');
-  require('./modules/msg').init('ct', handlers);
+	console.log('fetchAll');
+	var numberOfEl = $('.song-row').length;
+	$('.song-row').each(function( key, value ) {
+		var title =  jQuery(value).find('[data-col="title"]').find('.content').clone().children().remove().end().text();
+		var artist =  jQuery(value).find('[data-col="artist"]').find('.text').clone().children().remove().end().text();
+		$.get("https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=453b53a3e4a54335490c26d32a071201&artist=" + artist + "&track=" + title + "&format=json", function(data) {
+			if(data && data.track){
+				values.push(
+				{
+					id: artist+title,
+					value: data.track.listeners,
+					element: value
+				}
+				);
+			}
+			apply(numberOfEl);
+		})
+	});
 
-  console.log('jQuery version:', $().jquery);
-})();
+}, 4000, {leading: false, trailing: true});
+
+$('body').bind('DOMSubtreeModified', function(e) {
+	if($('body').find('.song-table').length){
+		$('.song-table').bind('DOMSubtreeModified', function(e) {
+			fetchAll();
+		});
+	}
+});
+
+
+setTimeout(function(){
+}, 10000);

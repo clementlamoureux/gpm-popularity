@@ -39,7 +39,7 @@ module.exports = function(grunt) {
       main: { files: [ {
         expand: true,
         cwd: 'code/',
-        src: ['**', '!js/**', '!**/*.md'],
+        src: ['**', '!**/*.md'],
         dest: 'build/unpacked-dev/'
       } ] },
       prod: { files: [ {
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
       js: {
         files: ['package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
                 'code/**/*.json', '!code/js/libs/*'],
-        tasks: ['test']
+        tasks: ['aa']
       }
     }
 
@@ -135,7 +135,10 @@ module.exports = function(grunt) {
   // DEFAULT
   //
 
-  grunt.registerTask('default', ['clean', 'test', 'mkdir:unpacked', 'copy:main', 'manifest',
-    'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec', 'circleci']);
+  grunt.registerTask('default', ['clean', 'mkdir:unpacked', 'copy:main', 'manifest',
+    'mkdir:js', 'browserify', 'copy:prod', 'uglify']);
+  grunt.registerTask('aa', ['clean', 'mkdir:unpacked', 'copy:main', 'manifest',
+    'mkdir:js', 'browserify']);
+  grunt.registerTask('serve', ['watch']);
 
 };
