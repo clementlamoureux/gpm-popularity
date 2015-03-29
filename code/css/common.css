@@ -1,31 +1,26 @@
 .song-table [data-col="note"]{
-	width:50px;
+	width:62px;
+	border-right: 10px solid #E5E5E5;
+	float:left;
 }
+.song-table td[data-col="note"]{
+	background: #BBB;
+}
+.button[data-id="lf"]{
+	float: right;
+	padding: 0 20px;
+}
+.button[data-id="lf"] .icon{
+  background: url('sprites.png') 597px 1462px;
+}
+
 .song-table [data-col="note"] .point{
 	width:2px;
 	height: 100%;
-	background: #333;
+	background: #666;
 	display:block;
 	float:left;
-}
-.song-table [data-col="note"] .point:nth-child(0){
-	height: 2px;
-}
-.song-table [data-col="note"] .point:nth-child(1){
-	height: 4px;
-}
-.song-table [data-col="note"] .point:nth-child(2){
-	height: 6px;
-}
-.song-table [data-col="note"] .point:nth-child(3){
-	height: 8px;
-}
-.song-table [data-col="note"] .point:nth-child(4){
-	height: 10px;
-}
-.song-table [data-col="note"] .point:nth-child(5){
-	height: 12px;
-}
-.song-table [data-col="note"] .point:nth-child(6){
-	height: 14px;
+	font-size: 0.8em;
+	color: #FFF;
+	text-shadow: 1px 1px #666;
 }

@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   var mnf = grunt.file.readJSON('code/manifest.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
-  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js']);
+  var file, files = grunt.file.expand({cwd:'code/*'}, ['*.js', '*. ']);
   for (var i = 0; i < files.length; i++) {
     file = files[i];
     fileMaps.browserify['build/unpacked-dev/js/' + file] = 'code/js/' + file;
@@ -41,6 +41,12 @@ module.exports = function(grunt) {
         cwd: 'code/',
         src: ['**', '!**/*.md'],
         dest: 'build/unpacked-dev/'
+      } ] },
+      css: { files: [ {
+        expand: true,
+        cwd: 'code/css/',
+        src: ['common.css'],
+        dest: 'build/unpacked-dev/css/'
       } ] },
       prod: { files: [ {
         expand: true,
@@ -83,6 +89,10 @@ module.exports = function(grunt) {
       js: {
         files: ['package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
                 'code/**/*.json', '!code/js/libs/*'],
+        tasks: ['aa']
+      },
+      css: {
+        files: ['code/**/*.css'],
         tasks: ['aa']
       }
     }
@@ -137,7 +147,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['clean', 'mkdir:unpacked', 'copy:main', 'manifest',
     'mkdir:js', 'browserify', 'copy:prod', 'uglify']);
-  grunt.registerTask('aa', ['clean', 'mkdir:unpacked', 'copy:main', 'manifest',
+  grunt.registerTask('aa', ['clean', 'mkdir:unpacked', 'copy:main', 'copy:css', 'manifest',
     'mkdir:js', 'browserify']);
   grunt.registerTask('serve', ['watch']);
 

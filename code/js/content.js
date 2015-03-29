@@ -1,6 +1,5 @@
 var values = [];
 var elPassed=0;
-var fetched=0;
 
 watchClicksEnabled = false;
 var watchClicks = function(){
@@ -11,26 +10,30 @@ var watchClicks = function(){
 				apply('all');
 			}, 500);
 		});
+		var temp = _.debounce(function(){
+			setTimeout(function(){
+				apply('all');
+			}, 50);
+		}, 250);
+		$('#music-content').bind('scroll', function(){
+			temp();
+		});
 	}
 }
 
 var apply = function(numberOfEl){
 	if(numberOfEl==='all' || values.length===numberOfEl){
-		if(!$('.song-table').find('th[data-col="note"]').length){
-			$('.song-table').find('th[data-col="title"]').before('<th data-col="note">LF</th>');
-		}
 		var max = parseInt(_.max(values, 'value').value);
 		_.each(values, function(value){
 			var result = 10 * parseInt(value.value);
 			result = result/max;
-			result = Math.ceil(result);
-			var render = '';
-			for(var i=0; i <= result; i++){
-				render+='<span class="point"></span>';
-			}
+			result = Math.ceil(result) * 1.5;
+			var render = '<span class="point" style="width:' + result + 'px">' + value.value + '</span>';
 			$('.song-row').each(function(key, valueA){
 				if($(valueA).find('[data-col="index"]').text()===value.track){
-					$(valueA).find('[data-col="title"]').before('<td data-col="note">' + render + '</td>');
+					if(!$(valueA).find('[data-col="note"]').length) {
+						$(valueA).find('[data-col="title"]').prepend('<div data-col="note">' + render + '</div>');
+					}
 				}
 			})
 			
@@ -39,11 +42,7 @@ var apply = function(numberOfEl){
 	}
 }
 var fetchAll =  _.debounce(function(){
-	if(fetched){
-		apply('all');
-		return false;
-	}
-	fetched = true;
+	values = [];
 	var numberOfEl = $('.song-row').length;
 	$('.song-row').each(function( key, value ) {
 		var title =  jQuery(value).find('[data-col="title"]').find('.content').clone().children().remove().end().text();
@@ -55,7 +54,7 @@ var fetchAll =  _.debounce(function(){
 				{
 					id: artist+title,
 					track: track,
-					value: data.track.listeners,
+					value: data.track.playcount,
 					element: value
 				}
 				);
@@ -72,22 +71,27 @@ var fetchAll =  _.debounce(function(){
 		})
 	});
 
-}, 4000, {leading: false, trailing: true});
+}, 100, {leading: false, trailing: true});
 
 tableBindingDone = false;
 tableBinding = function(){
 	if(!tableBindingDone){
 		tableBindingDone = true;
-
 		$('.song-table').find('tbody').bind('DOMSubtreeModified', function(e) {
-			console.log('substreemodified');
-			fetchAll();
+
 		});
 	}
 
 }
 $('body').bind('DOMSubtreeModified', function(e) {
 	if($('body').find('.song-table').length){
-		tableBinding();
+		if(!$('button[data-id="lf"]').length){
+			$('button#extra-links-container').before('<button class="button" data-id="lf"><div class="icon"></div></button>');
+			$('button[data-id="lf"]').click(function(){
+				tableBinding();
+				fetchAll();
+			});
+			//$('body').unbind('DOMSubtreeModified');
+		}
 	}
 });
