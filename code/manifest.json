@@ -6,8 +6,9 @@
     },
     "background": { "scripts": ["js/background.js"] },
     "content_scripts": [{
-      "matches": [ "http://*/*", "https://*/*" ],
-      "js": [ "js/libs/jquery.js", "js/libs/angular.min.js", "js/libs/lodash.min.js", "js/content.js" ]
+      "matches":["https://play.google.com/music/*"],
+      "js": [ "js/libs/jquery.js", "js/libs/angular.min.js", "js/libs/lodash.min.js", "js/content.js" ],
+      "css": [ "css/common.css" ]
       }],
       "options_page": "html/options.html",
       "devtools_page": "html/devtools.html",
