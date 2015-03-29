@@ -1,7 +1,7 @@
 {
-  "name": "AngularJS Debug",
-  "version": "0.1.2",
-  "description": "Debug AngularJS",
+  "name": "GPM Popularity",
+  "version": "1.0.0",
+  "description": "Added Popularity to Google Play Music",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
