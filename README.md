@@ -5,7 +5,7 @@ Here is the installation process (as mainly described in [Chrome Extension Skele
 
 ## Purpose of the project
 
-Google Play Music: All Access is a streaming service from Google, intended to work as Spotify, Deezer etc.. As far as I'm writing, Google have not implemented popularity statistics of tracks in search/album/artist songs etc... This extension fetch informations from the scrobbler Last.fm to display (ugly for now) listen count by track.
+Google Play Music: All Access is a streaming service from Google, intended to work as Spotify, Deezer etc.. At the time of this writing, Google have not implemented popularity statistics of tracks in search/album/artist songs etc... This extension fetch informations from the scrobbler Last.fm to display (ugly for now) listen count by track.
 
 ### Installation:
 
@@ -16,7 +16,7 @@ Google Play Music: All Access is a streaming service from Google, intended to wo
 
 ### Build instructions:
 
-    cd chrome-extension-skeleton
+    cd gpm-popularity
     npm install
     grunt
 
